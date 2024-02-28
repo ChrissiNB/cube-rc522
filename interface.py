@@ -4,6 +4,7 @@ import os
 import requests
 import time
 import pandas as pd
+from datetime import date
 
 
 
@@ -50,7 +51,9 @@ def setup_stats(media_paths, usb_media_path):
         "total_time": [0.0] * len(media_paths.keys()),
     }
 
-    stats_path = os.path.join(usb_media_path,"stats/data.csv")
+    date_today = date.today().strftime("%Y-%m-%d")
+
+    stats_path = os.path.join(usb_media_path,"stats/"+ date_today +"_data.csv")
     if not os.path.exists(stats_path):
         df = pd.DataFrame(dict_empty_data)
         df.to_csv(stats_path, index=False)

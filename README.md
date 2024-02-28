@@ -10,6 +10,10 @@ Read RFID tags with module rc522 on a Raspberry Pi 4
 
 ![GPIO Pins Raspberry Pi 4](./doku/Pins%20Raspberry%20Pi.png)
 
+If you want to check with an LED whether an RFID tag has been read, you must connect the following GPIO pins of the Raspberry Pi: <br>
+Pi Pin 11 to anode of LED (+ 3.3 V) <br>
+Pi Ground to cathode of LED (- GND)
+
 RFID Reader Connection library [MFRC522 Repo](https://github.com/pimylifeup/MFRC522-python/)
 
 ## Setup for RFID Tags with cube
