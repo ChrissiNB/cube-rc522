@@ -41,10 +41,10 @@ def upload_media(myobj):
         requests.post(url, json = myobj)
 
     except:
-        print("Server nicht erreichbar " + myobj)
+        print("Server nicht erreichbar ")
 
 'Setup stats csv'
-def setup_stats(media_paths, usb_media_path):
+def setup_stats(media_paths, data_media_path):
     dict_empty_data = {
         "tag": list(media_paths.keys()),
         "count": [0] * len(media_paths.keys()),
@@ -53,7 +53,7 @@ def setup_stats(media_paths, usb_media_path):
 
     date_today = date.today().strftime("%Y-%m-%d")
 
-    stats_path = os.path.join(usb_media_path,"stats/"+ date_today +"_data.csv")
+    stats_path = os.path.join(data_media_path,"stats/"+ date_today +"_data.csv")
     if not os.path.exists(stats_path):
         df = pd.DataFrame(dict_empty_data)
         df.to_csv(stats_path, index=False)
@@ -85,47 +85,48 @@ def write_stats(stats_path, rfid_last, time_change_rfid):
 if __name__ == "__main__":
 
     #Setup connection to usb
-    usb_media_path = find_usb_media_path() # Find path of usb stick
-    print("USB media path: " + str(usb_media_path)) # print found usb path
+    data_media_path = find_usb_media_path() # Find path of usb stick
+    print("USB media path: " + str(data_media_path)) # print found usb path 
 
-    if usb_media_path is None: #if no usb then stop
+    if data_media_path is None: #if no usb then stop 
         print("Kein USB-Stick gefunden. Bitte überprüfen Sie die Verbindung.")
-        exit(1)
+        data_media_path = '/home/admin/Desktop/'
+    
         #todo define alternative media folder on raspberry
 
     # Define Meida paths (0 is when start animation is shown)
     media_paths = {
         0: "",
-        1: os.path.join(usb_media_path, "videos/Rexroth1/"),
-        2: os.path.join(usb_media_path, "videos/Rexroth2/"),
-        3: os.path.join(usb_media_path, "videos/Rexroth3/"),
-        4: os.path.join(usb_media_path, "videos/Rexroth4/"),
-        5: os.path.join(usb_media_path, "videos/Rexroth5/"),
-        6: os.path.join(usb_media_path, "videos/Rexroth6/"),
+        1: os.path.join(data_media_path, "cube_media/Rexroth1/"),
+        2: os.path.join(data_media_path, "cube_media/Rexroth2/"),
+        3: os.path.join(data_media_path, "cube_media/Rexroth3/"),
+        4: os.path.join(data_media_path, "cube_media/Rexroth4/"),
+        5: os.path.join(data_media_path, "cube_media/Rexroth5/"),
+        6: os.path.join(data_media_path, "cube_media/Rexroth6/"),
     }
 
     #setup csv for stats
-    stats_path = setup_stats(media_paths, usb_media_path)
+    stats_path = setup_stats(media_paths, data_media_path)
 
-    #inilize SimpleMFRC522 to read data from RC522
+    #inilize SimpleMFRC522 to read data from RC522                      
     reader = SimpleMFRC522()
-
-
+    
+    
     # Define variables
-    continue_reading = True #while loop
+    continue_reading = True #while loop 
     LED_PIN= 11  #pin led
 
-
+     
     time_read_rfid = time.time()
     time_change_rfid = time.time()
-
+    
     rfid_last = 0 #start with empty/start path
     objpathempty = {"filePath":""} #show empty/start obj
     upload_media(objpathempty) #requst for media path
-
+    
     try:
         while continue_reading:
-
+        
             try:
                 uid, text_rfid = reader.read_no_block() #Read uid and text form rfid
                 reader.READER.MFRC522_Anticoll() #Function to read data in every loop
@@ -133,12 +134,12 @@ if __name__ == "__main__":
                 if (rfid not in [1,2,3,4,5,6]): #check if the number 1 to 6 is rea
                     print("read wrong rfid text or error when reading")
                     continue
-
+            
                 time_read_rfid = time.time() # track time when rfid was read
                 turn_on_led(LED_PIN) # show rfid was read
 
                 print("id: " +  str(rfid)) #print id
-
+            
             except:
                 print('no id') # if error occurs
 
@@ -150,7 +151,7 @@ if __name__ == "__main__":
                         time_change_rfid = write_stats(stats_path, rfid_last, time_change_rfid) #wirte the stats
                         rfid_last = 0 # set last rfid to start/empty
             finally:
-                GPIO.cleanup()
+                GPIO.cleanup() 
 
             if(text_rfid == None ): #if no id is read start form top
                 continue
@@ -165,4 +166,3 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Crtrl+C entered Code stopped") # stop code when crtrl+c
         exit(1)
-
