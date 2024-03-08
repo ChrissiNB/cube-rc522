@@ -39,7 +39,7 @@ while(continue_reading):
             
         turn_on_led(LED_PIN) # show rfid was read
 
-        print("id: " + str(rfid))
+        print("id: " + str(rfid) + " uid: " + str(uid))
     except:
         print("id:  -> lay down cube")
     finally:
