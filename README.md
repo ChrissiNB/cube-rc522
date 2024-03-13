@@ -82,7 +82,7 @@ Improve the perfomance of the frptend and backend with gernating of buiild files
 
 `npm run build`
 
-To start the frotend automatically copy the folder `cube-frotend/dist/fortend/browser` to `var/www/html`
+To start the frotend automatically copy the folder `cube-frontend/dist/frontend/browser` to `var/www/html`
 
 ## Start the Application 
 
@@ -94,4 +94,4 @@ Otherwise:
 
 Start backend and fortend insede their folders with `npm run start` and open `localhost:4200` in your browser
 
-The interface in started with `python interface.py`
+The interface is started with `python interface.py`
