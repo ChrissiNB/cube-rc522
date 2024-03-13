@@ -4,6 +4,12 @@ Read RFID tags with module rc522 on a Raspberry Pi 4
 
 ## Connect the RC522 to the Raspberry Pi 4 GPIO Pins
 
+Before you start you have to active the spi interface for the Raspberry Pi 4
+
+`sudo raspi-config`
+
+Enable spi interface under Interfacing options
+
 ![Overview connect RC522 to Raspberry Pi](./doku/Übersicht%20RC522%20Pin%20Belegung.png)
 
 ![RC522 Pin allocation](./doku/RC522%20Pin%20Belegung.png)
@@ -42,7 +48,7 @@ Before running you should check:
 
    `def find_usb_media_path(base_path='/media/admin'):`
 
-   Line 13 (Path on Raspberry Pi)
+   Line 14 (Path on Raspberry Pi)
 
    ```
    media_paths = {
@@ -56,8 +62,36 @@ Before running you should check:
    }
    ```
 
-   Line 94 to 102 (Define Folder paths for 1 to 6 on usb stick)
+   Line 98 to 106 (Define Folder paths for 1 to 6 on usb stick)
 
    Place the media files inside the folders 1 to 6 for every cube side
 
+   Backuppath locally if USB is not connted to Raspberry Pi
+
+   `data_media_path = '/home/admin/Desktop/`
+   
+   You habe to setup the Path usb_media_path with the 6 rexroth folders by yourself
+
+
 5. Run the frontend and backend with npm start and the interface.py with python interface.py over the command line
+
+
+## Setup for RFID Tags with cube
+
+Improve the perfomance of the frptend and backend with gernating of buiild files inseid their folders
+
+`npm run build`
+
+To start the frotend automatically copy the folder `cube-frotend/dist/fortend/browser` to `var/www/html`
+
+## Start the Application 
+
+The frontend can be called up in the browser under `localhost`
+
+The backend and interface can be started with the `start_backend.sh`and `start_interface.sh` when both folders are cloned into the folder `home/admin/Documents/`  (Both files can be placed on the desktop of the Raspberry Pi)
+
+Otherwise:
+
+Start backend and fortend insede their folders with `npm run start` and open `localhost:4200` in your browser
+
+The interface in started with `python interface.py`
